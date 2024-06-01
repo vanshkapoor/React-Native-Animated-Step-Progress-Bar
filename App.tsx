@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -16,6 +17,17 @@ import { barItems } from './assets/sampledata';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const incrementIndex = () => {
+    const id = activeIndex + 1;
+    setActiveIndex(id % barItems.length);
+  };
+
+  const decrementIndex = () => {
+    const id = activeIndex - 1;
+    setActiveIndex(Math.max(id, 0) % barItems.length);
+  };
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -31,8 +43,13 @@ function App(): React.JSX.Element {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <ProgressBar barItems={barItems} />
+        <ProgressBar barItems={barItems} activeIndex={activeIndex} />
       </ScrollView>
+
+      <View style={{marginTop: 10}}></View>
+      <Button onPress={incrementIndex} title={'Next'} />
+      <View style={{marginTop: 10}}></View>
+      <Button onPress={decrementIndex} title={'Back'} />
     </SafeAreaView>
   );
 }

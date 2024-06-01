@@ -4339,7 +4339,7 @@ react-native-progress@^5.0.1:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-svg@*:
+react-native-svg@*, react-native-svg@^15.3.0:
   version "15.3.0"
   resolved "https://registry.npmjs.org/react-native-svg/-/react-native-svg-15.3.0.tgz"
   integrity sha512-mBHu/fdlzUbpGX8SZFxgbKvK/sgqLfDLP8uh8G7Us+zJgdjO8OSEeqHQs+kPRdQmdLJQiqPJX2WXgCl7ToTWqw==

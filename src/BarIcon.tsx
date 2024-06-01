@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useRef } from 'react';
 import {Animated, StyleSheet, Text, View} from 'react-native';
+import TickMark from './TickMarkIcon';
 
 export const BarIcon = ({status, index}) => {
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -21,9 +22,8 @@ export const BarIcon = ({status, index}) => {
             useNativeDriver: true,
             }),
         ])
-    ).start()
-  }
-
+    ).start();
+  };
 
 
   useEffect(() => {
@@ -33,13 +33,13 @@ export const BarIcon = ({status, index}) => {
 
   return (
     <View>
-    { <Animated.View style={[ styles.ripple, {
+    { status === "active" ? <Animated.View style={[ styles.ripple, {
             transform: [{ scale: scaleAnim }],
             opacity: opacityAnim,
-          }]} />
+          }]} /> : null
     }
-    <View id="bar-icon" style={[styles.barIconView, status === "active" ? styles.activeBarView : styles.pendingBarView]}>
-      <Text style={styles.progressText}>{index}</Text>
+    <View id="bar-icon" style={[styles.barIconView, status === "active" ? styles.activeBarView : status === "completed"? styles.completedBarView : styles.pendingBarView]}>
+        { status=="completed"? <TickMark /> : <Text style={styles.progressText}>{index}</Text>}
     </View>
     </View>
   );
@@ -59,6 +59,9 @@ const styles = StyleSheet.create({
     },
     pendingBarView: {
         backgroundColor: "black",
+    },
+    completedBarView: {
+        backgroundColor: "cornflowerblue",
     },
     progressText: {
         margin: "auto",
