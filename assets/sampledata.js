@@ -3,31 +3,37 @@ export const barItems = [
   {
     index: 1,
     title: 'Step 1',
-    // status: 'completed',
   },
   {
     index: 2,
     title: 'Step 2',
-    // status: 'active',
   },
   {
     index: 3,
     title: 'Step 3',
-    // status: 'pending',
   },
   {
     index: 4,
     title: 'Step 4',
-    // status: 'pending',
   },
   {
     index: 5,
     title: 'Step 5',
-    // status: 'pending',
   },
   {
-    index: 5,
-    title: 'Step 5',
-    // status: 'pending',
+    index: 6,
+    title: 'Step 6',
+  },
+  {
+    index: 7,
+    title: 'Step 7',
+  },
+  {
+    index: 8,
+    title: 'Step 8',
+  },
+  {
+    index: 9,
+    title: 'Step 9',
   },
 ];

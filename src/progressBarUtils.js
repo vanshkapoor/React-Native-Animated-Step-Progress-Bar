@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import {Dimensions} from 'react-native';
+import { Dimensions } from 'react-native';
 
 export const getBarItemsWidth = totalItems => {
   const width = Dimensions.get('window').width;
@@ -11,11 +11,11 @@ export const createProgressBarItems = (barItems, activeIndex) => {
     return {
       index: barItem.index,
       title: barItem.title,
-      status: index<activeIndex? "completed": index == activeIndex? "active": "pending",
-    }
-  })
-}
+      status: index < activeIndex ? 'completed' : index === activeIndex ? 'active' : 'pending',
+    };
+  });
+};
 
 export const getScrollAmount = (width, activeIndex) => {
   return width * activeIndex;
-} 
+};

@@ -1,27 +1,46 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useRef, useState } from 'react';
 
-import {Animated, Easing, ScrollView, StyleSheet, Text, View} from 'react-native';
+import { Animated, Easing, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { createProgressBarItems, getBarItemsWidth, getScrollAmount } from './progressBarUtils';
 import { BarIcon } from './BarIcon';
 import * as Progress from 'react-native-progress';
+import { BAR_COLOR, COLOR, Layout, UNFILLED_BAR_COLOR, UNFILLED_ICON_COLOR } from './constants';
 
-export const ProgressBar = ({barItems, activeIndex}) => {
+interface ProgressBarProps {
+  barItems: { index: number, title: string }[],
+  activeIndex: number,
+  barColor?: string,
+  unfilledIconColor?: string,
+  unfilledBarColor?: string,
+}
+
+export const ProgressBar: React.FC<ProgressBarProps> = ({
+  barItems,
+  activeIndex,
+  barColor = BAR_COLOR,
+  unfilledIconColor = UNFILLED_ICON_COLOR,
+  unfilledBarColor = UNFILLED_BAR_COLOR,
+}) => {
   const [progressBarItems, setProgressBarItems] = useState([]);
+  const [previousIndex, setPreviousIndex] = useState(0);
+  const scrollX = useRef(new Animated.Value(300)).current;
+  const scrollViewRef = useRef(null);
   let totalItems = barItems.length;
   const barWidth = getBarItemsWidth(totalItems);
-  const scrollViewRef = useRef(null);
-  const scrollX = useRef(new Animated.Value(300)).current;
 
   const handleScroll = () => {
-    // Define the width you want to scroll by
+    let forwardScroll = true;
     const scrollWidth = getScrollAmount(barWidth, activeIndex);
+    if (activeIndex > previousIndex) forwardScroll = true
+    else forwardScroll = false;
 
-    setTimeout(() => {
-      if (scrollViewRef.current) {
-        scrollViewRef.current.scrollTo({ x: scrollWidth, animated: true });
-      }
-    }, 1000);
+    if (scrollViewRef.current && totalItems > 4 && (activeIndex % 4 === 0 || (activeIndex - previousIndex) >= 4) && forwardScroll) {
+      scrollViewRef.current.scrollTo({ x: scrollWidth, animated: true });
+    }
+    if (scrollViewRef.current && !forwardScroll) {
+      scrollViewRef.current.scrollTo({ x: scrollWidth, animated: true });
+    }
   };
 
   useEffect(() => {
@@ -29,6 +48,8 @@ export const ProgressBar = ({barItems, activeIndex}) => {
     setProgressBarItems(
       createProgressBarItems(barItems, activeIndex)
     );
+    setPreviousIndex(activeIndex);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [barItems, activeIndex]);
 
   return (
@@ -41,59 +62,57 @@ export const ProgressBar = ({barItems, activeIndex}) => {
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
           { useNativeDriver: false }
         )}>
-        <View style={styles.absolutePosition}>
-        <Progress.Bar
-          progress={(0.5 + activeIndex) / totalItems}
-          animated={true}
-          animationConfig={{
-            duration: 1000
-          }}
-          unfilledColor='#025c7a'
-          borderWidth={0}
-          width={barWidth*totalItems}
-          color='cornflowerblue'
-          style={styles.progressBar}
-          animationType='timing'
-        />
-        <View id="bar-parent" style={styles.barParent}>
-          {
-              progressBarItems.map((barItem, index:number) => <View id="box" key={index} style={[ styles.redColor, {width: barWidth}]}>
-            <BarIcon status={barItem.status} index={barItem.index} />
-            <View id="text-box" style={styles.textBox}>
-              <Text style={styles.barTitle}>{barItem.title}</Text>
-            </View>
-          </View>)
-          }
+        <View>
+          <Progress.Bar
+            progress={(0.5 + activeIndex) / totalItems}
+            animated={true}
+            animationConfig={{
+              duration: 1000,
+            }}
+            unfilledColor={unfilledBarColor}
+            borderWidth={0}
+            width={barWidth * totalItems}
+            color={barColor}
+            style={styles.progressBar}
+            animationType={'timing'}
+          />
+          <View id="bar-parent" style={styles.barParent}>
+            {
+              progressBarItems.map((barItem: { index: number, title: string }, index: number) => <View id="box" key={index} style={[styles.centerAligned, { width: barWidth }]}>
+                <BarIcon status={barItem.status} index={barItem.index} barColor={barColor} unfilledIconColor={unfilledIconColor} />
+                <View id="text-box" style={styles.textBox}>
+                  <Text style={styles.barTitle}>{barItem.title}</Text>
+                </View>
+              </View>)
+            }
+          </View>
         </View>
-        </View>
-    </Animated.ScrollView>
+      </Animated.ScrollView>
     </View>
   );
 };
 
 
 const styles = StyleSheet.create({
-    scrollView: {
-      flexDirection: 'row',
-    },
-    barParent: {
-        display: "flex",
-        flexDirection: "row",
-        marginTop: 10,
-        borderWidth: 2,
-        borderColor: "red"
-    },
-    redColor: {
-        alignItems: "center",
-    },
-    textBox: {
-        marginTop: 8,
-    },
-    barTitle: {
-      textAlign: "center"
-    },
-    progressBar: {
-      position: "absolute",
-      top: 34
-    }
+  scrollView: {
+    flexDirection: 'row',
+  },
+  barParent: {
+    display: "flex",
+    flexDirection: "row",
+    marginTop: 10,
+  },
+  centerAligned: {
+    alignItems: "center",
+  },
+  textBox: {
+    marginTop: 8,
+  },
+  barTitle: {
+    textAlign: "center"
+  },
+  progressBar: {
+    position: "absolute",
+    top: 34,
+  },
 })

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
-import React, {useEffect, useRef} from 'react';
-import {View, Animated} from 'react-native';
-import {Svg, Path} from 'react-native-svg';
+import React, { useEffect, useRef } from 'react';
+import { View, Animated } from 'react-native';
+import { Svg, Path } from 'react-native-svg';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
@@ -13,11 +13,11 @@ const TickMark: React.FC<TickMarkProps> = () => {
   const size = 24;
 
   useEffect(() => {
-      Animated.timing(lengthAnim.current, {
-        toValue: 1,
-        duration: 700,
-        useNativeDriver: true,
-      }).start();
+    Animated.timing(lengthAnim.current, {
+      toValue: 1,
+      duration: 700,
+      useNativeDriver: true,
+    }).start();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lengthAnim]);
 
@@ -27,7 +27,7 @@ const TickMark: React.FC<TickMarkProps> = () => {
   });
 
   return (
-    <View style={{margin: "auto"}}>
+    <View style={{ margin: "auto" }}>
       <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
         <AnimatedPath
           d="M4 12L9 17L20 7"

@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import type {PropsWithChildren} from 'react';
 import {
   Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   useColorScheme,
   View,
 } from 'react-native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { ProgressBar } from './src/ProgressBar';
 import { barItems } from './assets/sampledata';
 
@@ -39,17 +37,26 @@ function App(): React.JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View style={{height: 100}} />
+      <View style={{ height: 100 }} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <ProgressBar barItems={barItems} activeIndex={activeIndex} />
+        <ProgressBar
+          barItems={barItems}
+          activeIndex={activeIndex}
+          // barColor='red'
+        />
       </ScrollView>
 
-      <View style={{marginTop: 10}}></View>
+      <View style={{ marginTop: 100 }} />
       <Button onPress={incrementIndex} title={'Next'} />
-      <View style={{marginTop: 10}}></View>
+      <View style={{ marginTop: 10 }} />
       <Button onPress={decrementIndex} title={'Back'} />
+      <View style={{ marginTop: 10 }} />
+      <Button
+        onPress={() => setActiveIndex(barItems.length)}
+        title={'Complete'}
+      />
     </SafeAreaView>
   );
 }
