@@ -1,8 +1,6 @@
 # React Native Animated Step Progress Bar
 
-
-
-https://github.com/vanshkapoor/React-Native-Animated-Step-Progress-Bar/assets/31445077/160edfce-2d23-4d96-8ff3-6ffda3b63273
+https://github.com/vanshkapoor/React-Native-Animated-Step-Progress-Bar/assets/31445077/87d0e977-8e92-4608-aa57-d7e9340fe82b
 
 
 
